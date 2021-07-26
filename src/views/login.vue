@@ -1,5 +1,5 @@
 <template>
-  <div class="login" :style="'background-image:url(' + Background + ');'">
+  <div class="login" :style="'background-image:url('+ Background +');'">
     <!-- 登录框 -->
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
       <h3 class="title">HUMAN后台管理系统</h3>
@@ -21,7 +21,7 @@
           <img :src="codeUrl" @click="getCode"  alt=""/>
         </div>
       </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin: 0 0 25px 0">
+      <el-checkbox v-model="loginForm.rememberMe" style="margin: 0 0 25px 0;">
         记住我
       </el-checkbox>
       <el-form-item style="width: 100%;">
@@ -39,6 +39,7 @@ import Background from '@/assets/images/background.jpg'
 import { getCodeImg } from '@/api/login'
 import { encrypt } from '@/utils/rsaEncrypt'
 import Config from '@/settings'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'Login',
@@ -57,7 +58,7 @@ export default {
       loginRules: {
         username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
         password: [{ required: true, trigger: 'blur', message: '密码不能为空' }],
-        code: [{ required: true, trigger: 'blur', message: '验证码不能为空' }]
+        code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
       },
       loading: false,
       redirect: undefined
@@ -66,6 +67,7 @@ export default {
   created() {
     this.getCode()
     this.getCookie()
+    // token过期提示
     this.point()
   },
   methods: {
@@ -108,7 +110,7 @@ export default {
             Cookies.set('password', user.password, { expires: Config.passCookieExpires })
             Cookies.set('rememberMe', user.rememberMe, { expires: Config.passCookieExpires })
           } else {
-            Cookies.remote('username')
+            Cookies.remove('username')
             Cookies.remove('password')
             Cookies.remove('rememberMe')
           }
@@ -142,35 +144,47 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-.login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-size: cover;
-}
+  .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-size: cover;
+  }
+  .title {
+    margin: 0 auto 30px auto;
+    text-align: center;
+    color: #707070;
+  }
 
-.title {
-  margin: 0 auto 30px auto;
-  text-align: center;
-  color: #707070;
-}
-
-.login-form {
-  border-radius: 6px;
-  background: aliceblue;
-  width: 385px;
-  padding: 25px 25px 25px 25px;
-  .el-input {
-    height: 38px;
-    input {
+  .login-form {
+    border-radius: 6px;
+    background: #ffffff;
+    width: 385px;
+    padding: 25px 25px 5px 25px;
+    .el-input {
       height: 38px;
+      input {
+        height: 38px;
+      }
+    }
+    .input-icon{
+      height: 39px;width: 14px;margin-left: 2px;
     }
   }
-  .input-icon {
-    height: 39px;
-    width: 14px;
-    margin-left: 2px;
+  .login-tip {
+    font-size: 13px;
+    text-align: center;
+    color: #bfbfbf;
   }
-}
+  .login-code {
+    width: 33%;
+    display: inline-block;
+    height: 38px;
+    float: right;
+    img{
+      cursor: pointer;
+      vertical-align:middle
+    }
+  }
 </style>

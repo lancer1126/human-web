@@ -29,14 +29,14 @@ export default {
     },
     svgClass() {
       if (this.className) {
-        return 'svg-icon' + this.className
+        return 'svg-icon ' + this.className
       } else {
         return 'svg-icon'
       }
     },
     styleExternalIcon() {
       return {
-        mask: `url(${this.iconClass}) no-repeat 50% 50&`,
+        mask: `url(${this.iconClass}) no-repeat 50% 50%`,
         '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`
       }
     }
