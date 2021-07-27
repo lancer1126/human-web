@@ -8,7 +8,7 @@ import { getToken } from '@/utils/auth'
 
 // axios实例
 const service = axios.create({
-  baseURL: process.env.NODE_PATH === 'production' ? process.env.VUE_APP_BASE_API : '/',
+  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_API : '/',
   timeout: Config.timeout
 })
 
@@ -25,6 +25,13 @@ service.interceptors.request.use(
   error => {
     Promise.reject(error)
   }
+)
+
+// response拦截器
+service.interceptors.response.use(
+    response => {
+      return response.data
+    }
 )
 
 export default service

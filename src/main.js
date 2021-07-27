@@ -16,6 +16,7 @@ import VueHighlightJS from 'vue-highlightjs'
 import 'highlight.js/styles/atom-one-dark.css'
 
 import './assets/styles/index.scss'
+import './assets/styles/element-variables.scss'
 
 import './assets/icons'
 import './router/index'

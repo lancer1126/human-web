@@ -1,19 +1,19 @@
 'use strict'
 const path = require('path')
-const defaultSettings = require('./src/settings')
+const defaultSettings = require('./src/settings.js')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
 const name = defaultSettings.title
-const port = 8013
+const port = 8014
 
 module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_PATH === 'development',
+  lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -21,6 +21,22 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      '/api': {
+        target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': 'api'
+        }
+      },
+      '/auth': {
+        target: process.env.VUE_APP_BASE_API,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/auth': 'auth'
+        }
+      }
     }
   },
   configureWebpack: {
@@ -62,7 +78,7 @@ module.exports = {
         .end()
 
     config
-        .when(process.env.NODE_ENV !== 'development',
+        .when(process.env.NODE_ENV === 'development',
             config => config.devtool('cheap-source-map')
         )
   },

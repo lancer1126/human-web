@@ -40,6 +40,7 @@ import { getCodeImg } from '@/api/login'
 import { encrypt } from '@/utils/rsaEncrypt'
 import Config from '@/settings'
 import Cookies from 'js-cookie'
+import qs from 'qs'
 
 export default {
   name: 'Login',
@@ -62,6 +63,21 @@ export default {
       },
       loading: false,
       redirect: undefined
+    }
+  },
+  watch: {
+    $route: {
+      handler: function (route) {
+        const data = route.query
+        if (data && data.redirect) {
+          this.redirect = data.redirect
+          delete data.redirect
+          if (JSON.stringify(data) !== '{}') {
+            this.redirect = this.redirect + '&' + qs.stringify(data, { indices: false })
+          }
+        }
+      },
+      immediate: true
     }
   },
   created() {
