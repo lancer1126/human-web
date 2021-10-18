@@ -18,7 +18,7 @@
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
         <div class="login-code">
-          <img :src="codeUrl" @click="getCode"  alt=""/>
+          <img :src="codeUrl" alt="" @click="getCode">
         </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin: 0 0 25px 0;">
@@ -67,7 +67,7 @@ export default {
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler: function(route) {
         const data = route.query
         if (data && data.redirect) {
           this.redirect = data.redirect
@@ -137,6 +137,7 @@ export default {
             this.loading = false
             this.getCode()
           })
+          console.log(this.redirect)
         } else {
           console.log('error submit!')
           return false

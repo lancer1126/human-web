@@ -52,38 +52,38 @@ module.exports = {
     config.plugins.delete('preload')
     config.plugins.delete('prefetch')
     config.module
-        .rule('svg')
-        .exclude.add(resolve('src/assets/icons'))
-        .end()
+      .rule('svg')
+      .exclude.add(resolve('src/assets/icons'))
+      .end()
     config.module
-        .rule('icons')
-        .test(/\.svg$/)
-        .include.add(resolve('src/assets/icons'))
-        .end()
-        .use('svg-sprite-loader')
-        .loader('svg-sprite-loader')
-        .options({
-          symbolId: 'icon-[name]'
-        })
-        .end()
+      .rule('icons')
+      .test(/\.svg$/)
+      .include.add(resolve('src/assets/icons'))
+      .end()
+      .use('svg-sprite-loader')
+      .loader('svg-sprite-loader')
+      .options({
+        symbolId: 'icon-[name]'
+      })
+      .end()
 
     config.module
-        .rule('vue')
-        .use('vue-loader')
-        .loader('vue-loader')
-        .tap(options => {
-          options.compilerOptions.preserveWhitespace = true
-          return options
-        })
-        .end()
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => {
+        options.compilerOptions.preserveWhitespace = true
+        return options
+      })
+      .end()
 
     config
-        .when(process.env.NODE_ENV === 'development',
-            config => config.devtool('cheap-source-map')
-        )
+      .when(process.env.NODE_ENV === 'development',
+        config => config.devtool('cheap-source-map')
+      )
   },
   transpileDependencies: [
-      'vue-echarts',
-      'resize-detector'
+    'vue-echarts',
+    'resize-detector'
   ]
 }
